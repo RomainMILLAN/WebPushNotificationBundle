@@ -1,6 +1,7 @@
 {
   "name": "@romainmillan/web-push-notification",
   "version": "0.1.0",
+  "private": true,
   "description": "Web Push client for Symfony and Laravel: subscription, key rotation, service worker with iOS navigation intent",
   "license": "MIT",
   "type": "module",

@@ -323,8 +323,9 @@ the new owner.
 - GitHub Actions are pinned by commit SHA, the workflow has `permissions: contents: read`, no
   `pull_request_target`.
 - `composer audit` and `yarn npm audit --all --recursive --severity high` run in CI.
-- Recommended for maintainers: publish to npm with provenance from CI, and enable 2FA on
-  Packagist, npm and GitHub (see [contributing.md](contributing.md#releasing)).
+- The JS client is not published on npm: it ships in `assets/dist` inside the Composer archive,
+  so there is a single artifact to trust. Recommended for maintainers: enable 2FA on Packagist
+  and GitHub (see [contributing.md](contributing.md#releasing)).
 - Minimal dependencies: `minishlink/web-push`, Guzzle, PSR interfaces, `symfony/string`.
 
 ## GDPR

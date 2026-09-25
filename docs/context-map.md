@@ -16,7 +16,7 @@
 flowchart LR
     Host["Host application<br/>(Symfony / Laravel)"]
     Pkg["Web Push package<br/>(subscriptions + delivery)"]
-    SW["Service worker + page client<br/>(npm package)"]
+    SW["Service worker + page client<br/>(assets/dist)"]
     Mini["minishlink/web-push"]
     PS["Push services<br/>(Apple, Google, Mozilla, Microsoft)"]
 

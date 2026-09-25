@@ -1,9 +1,11 @@
 # Frontend
 
-The browser side ships as the npm package **`@romainmillan/web-push-notification`** (ESM,
-TypeScript declarations included). The same files are present in the Composer package, under
-`vendor/romainmillan/web-push-notification/assets`, so you can install it from there without
-the npm registry.
+The browser side ships **inside the Composer package**, prebuilt in
+`vendor/romainmillan/web-push-notification/assets/dist` (ESM, TypeScript declarations included),
+as the local package **`@romainmillan/web-push-notification`**. It is not published on the npm
+registry: install it from the vendor directory with a `file:` dependency, the Symfony UX
+convention. Its version therefore always matches the PHP package, and the service worker
+served by `/web-push-sw.js` needs no JavaScript tooling at all.
 
 | Entry point | Content |
 |---|---|
@@ -40,7 +42,7 @@ the npm registry.
 
 ### Symfony + Webpack Encore (`@symfony/stimulus-bridge`)
 
-Install the package from the vendor directory (or from the npm registry):
+Install the package from the vendor directory:
 
 ```bash
 yarn add @romainmillan/web-push-notification@file:vendor/romainmillan/web-push-notification/assets
@@ -127,8 +129,6 @@ startWebPush();
 ### Laravel + Vite
 
 ```bash
-yarn add @romainmillan/web-push-notification
-# or, from the Composer package:
 yarn add @romainmillan/web-push-notification@file:vendor/romainmillan/web-push-notification/assets
 ```
 

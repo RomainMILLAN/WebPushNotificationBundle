@@ -11,7 +11,6 @@
 <p align="center">
   <a href="https://github.com/romainmillan/web-push-notification/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/romainmillan/web-push-notification/actions/workflows/ci.yml/badge.svg"></a>
   <a href="https://packagist.org/packages/romainmillan/web-push-notification"><img alt="Packagist" src="https://img.shields.io/packagist/v/romainmillan/web-push-notification"></a>
-  <a href="https://www.npmjs.com/package/@romainmillan/web-push-notification"><img alt="npm" src="https://img.shields.io/npm/v/@romainmillan/web-push-notification"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>
 
@@ -254,7 +253,7 @@ Read [docs/security.md](docs/security.md) before going to production.
 |---|---|
 | [docs/symfony.md](docs/symfony.md) | Symfony installation and configuration reference |
 | [docs/laravel.md](docs/laravel.md) | Laravel installation and configuration reference |
-| [docs/frontend.md](docs/frontend.md) | npm package, build tools, Stimulus controller, service worker, iOS |
+| [docs/frontend.md](docs/frontend.md) | JS client (shipped in `assets/dist`), build tools, Stimulus controller, service worker, iOS |
 | [docs/payload-contract.md](docs/payload-contract.md) | The v1 payload contract between PHP and the service worker |
 | [docs/security.md](docs/security.md) | Threat model and security decisions |
 | [docs/consistency.md](docs/consistency.md) | Eventual consistency cases and concurrency |

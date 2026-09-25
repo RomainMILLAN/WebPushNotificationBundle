@@ -8,7 +8,7 @@ skill, one component at a time. Exports land in `art/` (excluded from the Compos
 ## The product
 
 `romainmillan/web-push-notification`: an open-source (MIT) PHP package for Symfony and Laravel,
-plus an npm package, that lets web applications send push notifications to browsers and
+with its browser client, that lets web applications send push notifications to browsers and
 installed PWAs, safely. Audience: PHP developers reading a GitHub README, Packagist and npm pages.
 
 Tone: precise, trustworthy, quietly technical. Security-minded without looking like a security

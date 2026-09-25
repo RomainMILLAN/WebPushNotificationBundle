@@ -112,27 +112,8 @@ uses `pull_request_target`.
 2. Commit, tag `vX.Y.Z`, push the tag. Packagist picks the tag up through the GitHub hook (the
    Composer archive excludes `tests/`, `tools/`, `docs/`, `art/`, `assets/src`, `assets/tests`;
    `src/`, including `src/Testing`, and `assets/dist` are always shipped).
-3. Publish the npm package **from `assets/`**, from a GitHub Actions job with `id-token: write`
-   so that the provenance statement can be generated:
-
-   ```yaml
-   permissions:
-     contents: read
-     id-token: write
-   steps:
-     - uses: actions/checkout@<sha>
-     - uses: actions/setup-node@<sha>
-       with: { node-version: 22 }
-     - run: corepack enable
-       working-directory: assets
-     - run: yarn install --immutable && yarn build && git diff --exit-code -- dist
-       working-directory: assets
-     - run: yarn npm publish --access public --provenance
-       working-directory: assets
-       env:
-         YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-   ```
-
-   (No release workflow is committed yet.)
+3. Nothing to publish on npm: the JS client ships in `assets/dist` inside the Composer archive
+   and applications install it with `file:vendor/romainmillan/web-push-notification/assets`.
+   `assets/package.json` is `"private": true` so it cannot be published by accident.
 4. Enable 2FA on the GitHub, Packagist and npm accounts; restrict the npm token to publishing
    this package.
