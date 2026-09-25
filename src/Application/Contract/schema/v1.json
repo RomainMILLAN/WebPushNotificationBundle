@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/romainmillan/web-push-notification/payload/v1.json",
+  "title": "Web push payload, contract v1",
+  "description": "Published language between PHP (PayloadEncoder) and the service worker. Encoded JSON is at most 2819 bytes.",
+  "type": "object",
+  "required": ["v", "id", "title", "body", "tag", "silent", "requireInteraction", "renotify", "actions", "data"],
+  "additionalProperties": false,
+  "properties": {
+    "v": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "body": { "type": "string", "maxLength": 1000 },
+    "tag": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{1,64}$" },
+    "silent": { "type": "boolean" },
+    "requireInteraction": { "type": "boolean" },
+    "renotify": { "type": "boolean" },
+    "icon": { "type": "string", "description": "In-origin path or https URL; the worker only displays same-origin or asset_hosts images." },
+    "badge": { "type": "string" },
+    "click": { "type": "string", "description": "In-origin path; the worker re-validates it against click_prefixes." },
+    "badgeCount": { "type": "integer", "minimum": 0 },
+    "actions": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["action", "title", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "action": { "type": "string", "pattern": "^[a-z][a-z0-9_-]{0,31}$" },
+          "title": { "type": "string", "minLength": 1, "maxLength": 40 },
+          "type": { "enum": ["navigate", "post", "dismiss"] },
+          "url": { "type": "string", "description": "navigate: in-origin path; post: same-origin absolute URL carrying its own authorization (signed)." }
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "maxProperties": 16,
+      "additionalProperties": { "type": ["string", "number", "boolean"] }
+    }
+  }
+}

@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: the workflow only reads the repository. No pull_request_target.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-tests:
+    name: PHP ${{ matrix.php }} · ${{ matrix.framework }} · ${{ matrix.dependencies }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { php: '8.2', framework: 'symfony/framework-bundle:6.4.*', laravel: 'laravel/framework:^11.0', dependencies: lowest }
+          - { php: '8.2', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^11.0', dependencies: highest }
+          - { php: '8.3', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
+          - { php: '8.4', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
+          - { php: '8.5', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: web_push
+          MYSQL_USER: web_push
+          MYSQL_PASSWORD: web_push
+          MYSQL_ROOT_PASSWORD: root
+        ports: ['3306:3306']
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=3s --health-retries=20
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: web_push
+          POSTGRES_USER: web_push
+          POSTGRES_PASSWORD: web_push
+        ports: ['5432:5432']
+        options: --health-cmd="pg_isready -U web_push" --health-interval=5s --health-timeout=3s --health-retries=20
+    env:
+      WEB_PUSH_TEST_MYSQL_DSN: 'mysql://web_push:web_push@127.0.0.1:3306/web_push'
+      WEB_PUSH_TEST_PGSQL_DSN: 'pgsql://web_push:web_push@127.0.0.1:5432/web_push'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, gmp, sodium, mbstring, openssl, pdo_sqlite, pdo_mysql, pdo_pgsql
+          coverage: none
+      - name: Pin the framework versions of this job
+        run: composer require --dev --no-update "${{ matrix.framework }}" "${{ matrix.laravel }}"
+      - name: Install dependencies (${{ matrix.dependencies }})
+        run: composer update --no-interaction --no-progress ${{ matrix.dependencies == 'lowest' && '--prefer-lowest --prefer-stable' || '' }}
+      - name: Audit dependencies
+        run: composer audit
+      - run: vendor/bin/phpunit
+
+  symfony-8:
+    # Laravel 11/12 require Symfony 7 components: Symfony 8 is tested without Laravel.
+    name: PHP 8.4 · Symfony 8.0 (without Laravel)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.4'
+          extensions: curl, gmp, sodium, pdo_sqlite
+          coverage: none
+      - name: Drop Laravel and allow Symfony 8
+        run: |
+          composer remove --dev --no-update orchestra/testbench
+          for package in browser-kit clock console css-selector dom-crawler framework-bundle lock messenger notifier rate-limiter security-bundle twig-bundle yaml; do
+            composer require --dev --no-update "symfony/$package:^8.0"
+          done
+      - run: composer update --no-interaction --no-progress
+      - run: vendor/bin/phpunit --testsuite unit,contract,security,symfony
+
+  php-quality:
+    name: Static analysis & style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.2'
+          extensions: curl, gmp, sodium, pdo_sqlite
+          coverage: pcov
+      - run: composer validate --strict
+      - run: composer install --no-interaction --no-progress
+      - name: Install the isolated tools
+        run: for tool in phpstan php-cs-fixer rector deptrac infection; do composer install --no-interaction --no-progress --working-dir=tools/$tool; done
+      - run: tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes
+      - run: tools/phpstan/vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+      - run: tools/rector/vendor/bin/rector process --dry-run --no-progress-bar
+      - run: tools/deptrac/vendor/bin/deptrac analyse --no-progress
+      - name: Mutation testing (Domain + Application)
+        run: tools/infection/vendor/bin/infection --threads=max --no-progress --min-msi=80 --min-covered-msi=80
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: assets
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+      - run: corepack enable
+      - run: yarn install --immutable
+      - run: yarn npm audit --all --recursive --severity high
+      - run: yarn typecheck
+      - run: yarn test
+      - name: The committed service worker is exactly what the sources build
+        run: yarn build && git diff --exit-code -- dist

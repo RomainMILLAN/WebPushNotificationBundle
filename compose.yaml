@@ -1,0 +1,48 @@
+services:
+    php:
+        build: .docker/php
+        user: '${UID:-1000}:${GID:-1000}'
+        working_dir: /app
+        volumes:
+            - .:/app
+            - composer-cache:/tmp/composer
+        environment:
+            WEB_PUSH_TEST_MYSQL_DSN: 'mysql://web_push:web_push@mysql:3306/web_push'
+            WEB_PUSH_TEST_PGSQL_DSN: 'pgsql://web_push:web_push@postgres:5432/web_push'
+        depends_on:
+            - mysql
+            - postgres
+        command: ['sleep', 'infinity']
+
+    node:
+        image: node:22-alpine
+        user: '${UID:-1000}:${GID:-1000}'
+        working_dir: /app/assets
+        environment:
+            HOME: /tmp
+            COREPACK_HOME: /tmp/corepack
+        volumes:
+            - .:/app
+        command: ['sleep', 'infinity']
+
+    mysql:
+        image: mysql:8.4
+        environment:
+            MYSQL_DATABASE: web_push
+            MYSQL_USER: web_push
+            MYSQL_PASSWORD: web_push
+            MYSQL_ROOT_PASSWORD: root
+        tmpfs:
+            - /var/lib/mysql
+
+    postgres:
+        image: postgres:17-alpine
+        environment:
+            POSTGRES_DB: web_push
+            POSTGRES_USER: web_push
+            POSTGRES_PASSWORD: web_push
+        tmpfs:
+            - /var/lib/postgresql/data
+
+volumes:
+    composer-cache:

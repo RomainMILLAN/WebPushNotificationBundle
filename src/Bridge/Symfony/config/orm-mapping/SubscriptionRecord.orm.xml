@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Same schema as the Laravel migration: one table, whatever the framework.
+    The endpoint is unique through its SHA-256 (endpoint_hash): a 512-character URL
+    cannot carry a unique index on every database.
+-->
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="RomainMillan\WebPushNotification\Bridge\Symfony\Doctrine\SubscriptionRecord" table="web_push_subscription">
+        <unique-constraints>
+            <unique-constraint name="uniq_web_push_endpoint_hash" columns="endpoint_hash"/>
+        </unique-constraints>
+        <indexes>
+            <index name="idx_web_push_subscriber" columns="subscriber_id,retired_at"/>
+            <index name="idx_web_push_owner_type" columns="owner_type,retired_at"/>
+            <index name="idx_web_push_last_registered" columns="last_registered_at"/>
+        </indexes>
+
+        <id name="id" type="string" column="id" length="32"/>
+
+        <field name="ownerType" column="owner_type" type="string" length="16"/>
+        <field name="subscriberId" column="subscriber_id" type="string" length="191" nullable="true"/>
+        <field name="endpoint" column="endpoint" type="text"/>
+        <field name="endpointHash" column="endpoint_hash" type="string" length="64"/>
+        <field name="pushHost" column="push_host" type="string" length="253"/>
+        <field name="p256dh" column="p256dh" type="text"/>
+        <field name="auth" column="auth" type="text"/>
+        <field name="contentEncoding" column="content_encoding" type="string" length="16"/>
+        <field name="registeredAt" column="registered_at" type="datetime_immutable"/>
+        <field name="lastRegisteredAt" column="last_registered_at" type="datetime_immutable"/>
+        <field name="retiredAt" column="retired_at" type="datetime_immutable" nullable="true"/>
+        <field name="retirementReason" column="retirement_reason" type="string" length="16" nullable="true"/>
+    </entity>
+</doctrine-mapping>

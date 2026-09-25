@@ -1,0 +1,13 @@
+/vendor/
+/composer.lock
+/.phpunit.cache/
+/.php-cs-fixer.cache
+/var/
+/assets/node_modules/
+/assets/.yarn/*
+!/assets/.yarn/releases
+/infection.log
+/coverage/
+/tests/Integration/Symfony/App/var/
+/.deptrac.cache
+/ds-bundle/

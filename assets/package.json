@@ -1,0 +1,65 @@
+{
+  "name": "@romainmillan/web-push-notification",
+  "version": "0.1.0",
+  "description": "Web Push client for Symfony and Laravel: subscription, key rotation, service worker with iOS navigation intent",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./service-worker": {
+      "types": "./dist/types/service-worker/index.d.ts",
+      "import": "./dist/service-worker.js"
+    },
+    "./controllers/web_push_controller": {
+      "types": "./dist/types/controllers/web_push_controller.d.ts",
+      "import": "./dist/controllers/web_push_controller.js"
+    },
+    "./web-push-sw.js": "./dist/web-push-sw.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build --mode index && vite build --mode service-worker && vite build --mode controller && vite build --mode standalone && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "symfony": {
+    "controllers": {
+      "web-push": {
+        "main": "dist/controllers/web_push_controller.js",
+        "webpackMode": "eager",
+        "fetch": "eager",
+        "enabled": true
+      }
+    },
+    "importmap": {
+      "@hotwired/stimulus": "^3.0.0"
+    }
+  },
+  "peerDependencies": {
+    "@hotwired/stimulus": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@hotwired/stimulus": {
+      "optional": true
+    }
+  },
+  "packageManager": "yarn@4.9.1",
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@types/node": "^22",
+    "jsdom": "^30.1.1",
+    "typescript": "^5.9",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
+  }
+}

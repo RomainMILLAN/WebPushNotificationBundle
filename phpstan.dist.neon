@@ -1,0 +1,12 @@
+# Extensions (strict-rules, phpunit, symfony) are registered by phpstan/extension-installer in tools/phpstan.
+parameters:
+    level: max
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - tests/Integration/Symfony/App/var/*
+        - tests/Integration/Laravel/*/storage/*
+    tmpDir: var/phpstan
+    bootstrapFiles:
+        - vendor/autoload.php

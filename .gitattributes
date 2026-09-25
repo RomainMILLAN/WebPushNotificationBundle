@@ -1,0 +1,23 @@
+* text=auto eol=lf
+
+# Never export-ignore /src or /assets/dist: they ARE the package.
+/.docker            export-ignore
+/.github            export-ignore
+/art                export-ignore
+/assets/src         export-ignore
+/assets/tests       export-ignore
+/docs               export-ignore
+/tests              export-ignore
+/tools              export-ignore
+/.editorconfig      export-ignore
+/.gitattributes     export-ignore
+/.gitignore         export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/compose.yaml       export-ignore
+/deptrac.yaml       export-ignore
+/infection.json5    export-ignore
+/Makefile           export-ignore
+/phpstan.dist.neon  export-ignore
+/phpunit.dist.xml   export-ignore
+/rector.php         export-ignore
+/.design-sync export-ignore

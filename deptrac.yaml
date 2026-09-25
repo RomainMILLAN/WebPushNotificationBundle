@@ -1,0 +1,69 @@
+# The dependency rule, enforced: the domain knows nothing but itself (and symfony/string,
+# the project-wide string API); frameworks only appear in the bridges.
+deptrac:
+  paths:
+    - ./src
+  layers:
+    - name: Domain
+      collectors:
+        - type: directory
+          value: src/Domain/.*
+    - name: Application
+      collectors:
+        - type: directory
+          value: src/Application/.*
+    - name: Infrastructure
+      collectors:
+        - type: directory
+          value: src/Infrastructure/.*
+    - name: SymfonyBridge
+      collectors:
+        - type: directory
+          value: src/Bridge/Symfony/.*
+    - name: LaravelBridge
+      collectors:
+        - type: directory
+          value: src/Bridge/Laravel/.*
+    - name: Testing
+      collectors:
+        - type: directory
+          value: src/Testing/.*
+    - name: PHPUnit
+      collectors:
+        - type: classNameRegex
+          value: '#^PHPUnit\\#'
+    - name: StringComponent
+      collectors:
+        - type: classNameRegex
+          value: '#^Symfony\\Component\\String\\#'
+        - type: functionName
+          value: '^Symfony\\Component\\String\\(u|b)$'
+    - name: Psr
+      collectors:
+        - type: classNameRegex
+          value: '#^Psr\\#'
+    - name: Vendor
+      collectors:
+        - type: classNameRegex
+          value: '#^(Minishlink|GuzzleHttp)\\#'
+    - name: Symfony
+      collectors:
+        - type: bool
+          must:
+            - type: classNameRegex
+              value: '#^(Symfony|Doctrine|Twig)\\#'
+          must_not:
+            - type: classNameRegex
+              value: '#^Symfony\\Component\\String\\#'
+    - name: Laravel
+      collectors:
+        - type: classNameRegex
+          value: '#^(Illuminate|Laravel|Orchestra)\\#'
+  ruleset:
+    Domain: [StringComponent]
+    Application: [Domain, StringComponent, Psr]
+    Infrastructure: [Domain, Application, StringComponent, Psr, Vendor]
+    SymfonyBridge: [Domain, Application, Infrastructure, StringComponent, Psr, Symfony, Vendor]
+    LaravelBridge: [Domain, Application, Infrastructure, StringComponent, Psr, Laravel, Symfony, Vendor]
+    # Shipped for third-party storage adapters: the repository contract suite.
+    Testing: [Domain, Application, StringComponent, PHPUnit]
