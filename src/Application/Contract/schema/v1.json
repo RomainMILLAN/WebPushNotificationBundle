@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/romainmillan/web-push-notification/payload/v1.json",
+  "$id": "https://github.com/RomainMILLAN/WebPushNotificationBundle/blob/main/src/Application/Contract/schema/v1.json",
   "title": "Web push payload, contract v1",
   "description": "Published language between PHP (PayloadEncoder) and the service worker. Encoded JSON is at most 2819 bytes.",
   "type": "object",

@@ -9,7 +9,7 @@
 <p align="center"><strong>Web Push notifications for Symfony and Laravel: subscription storage, VAPID delivery, an SSRF-hardened transport and a ready-to-use service worker.</strong></p>
 
 <p align="center">
-  <a href="https://github.com/romainmillan/web-push-notification/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/romainmillan/web-push-notification/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/RomainMILLAN/WebPushNotificationBundle/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/RomainMILLAN/WebPushNotificationBundle/actions/workflows/ci.yml/badge.svg?branch=main"></a>
   <a href="https://packagist.org/packages/romainmillan/web-push-notification"><img alt="Packagist" src="https://img.shields.io/packagist/v/romainmillan/web-push-notification"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>

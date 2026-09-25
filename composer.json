@@ -3,6 +3,12 @@
     "description": "Web Push notifications for Symfony and Laravel: subscription storage, VAPID delivery, SSRF-hardened transport and a ready-to-use service worker.",
     "type": "symfony-bundle",
     "license": "MIT",
+    "homepage": "https://github.com/RomainMILLAN/WebPushNotificationBundle",
+    "support": {
+        "issues": "https://github.com/RomainMILLAN/WebPushNotificationBundle/issues",
+        "source": "https://github.com/RomainMILLAN/WebPushNotificationBundle",
+        "docs": "https://github.com/RomainMILLAN/WebPushNotificationBundle/tree/main/docs"
+    },
     "keywords": ["web-push", "push-notifications", "pwa", "vapid", "service-worker", "symfony", "symfony-bundle", "laravel"],
     "authors": [
         {
