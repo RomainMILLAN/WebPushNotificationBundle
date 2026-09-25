@@ -31,7 +31,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_register_records_the_fact(): void
+    public function it_should_record_the_registration_fact(): void
     {
         $subscription = $this->registered(IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome());
 
@@ -40,7 +40,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_active_same_owner_renews_whatever_the_keys_key_rotation(): void
+    public function it_should_renew_an_active_device_of_the_same_owner_whatever_the_keys(): void
     {
         $browser = TestBrowser::safari();
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
@@ -55,7 +55,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_active_other_owner_with_the_same_auth_is_reassigned_shared_browser(): void
+    public function it_should_reassign_an_active_device_to_another_owner_proving_the_same_auth(): void
     {
         $browser = TestBrowser::chrome();
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
@@ -70,7 +70,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_active_other_owner_with_another_auth_is_refused_leaked_endpoint(): void
+    public function it_should_refuse_another_owner_presenting_another_auth_on_an_active_device(): void
     {
         $browser = TestBrowser::chrome();
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
@@ -85,7 +85,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_anonymous_to_identified_with_proof_is_a_claim(): void
+    public function it_should_let_an_identified_owner_claim_an_anonymous_device_with_proof(): void
     {
         $browser = TestBrowser::chrome();
         $subscription = $this->released($this->registered(new AnonymousOwner(), $browser));
@@ -94,7 +94,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_identified_to_anonymous_is_refused_no_downgrade(): void
+    public function it_should_refuse_to_downgrade_an_active_identified_device_to_anonymous(): void
     {
         $browser = TestBrowser::chrome();
         $subscription = $this->released($this->registered(IdentifiedOwner::fromSubscriberId('user:1'), $browser));
@@ -103,7 +103,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_same_anonymous_owner_proves_nothing_key_change_needs_the_auth(): void
+    public function it_should_require_the_auth_for_an_anonymous_key_change(): void
     {
         $browser = TestBrowser::chrome();
         $subscription = $this->released($this->registered(new AnonymousOwner(), $browser));
@@ -114,7 +114,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_retired_same_owner_is_reactivated(): void
+    public function it_should_reactivate_a_retired_device_of_the_same_owner(): void
     {
         $browser = TestBrowser::chrome();
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
@@ -128,7 +128,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_retired_other_owner_with_the_same_auth_is_reactivated_for_them(): void
+    public function it_should_reactivate_a_retired_device_for_another_owner_proving_the_same_auth(): void
     {
         $browser = TestBrowser::chrome();
         $bob = IdentifiedOwner::fromSubscriberId('user:2');
@@ -142,7 +142,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_retired_other_owner_with_another_auth_is_refused(): void
+    public function it_should_refuse_another_owner_presenting_another_auth_on_a_retired_device(): void
     {
         $browser = TestBrowser::chrome();
         $subscription = $this->released($this->registered(IdentifiedOwner::fromSubscriberId('user:1'), $browser));
@@ -153,7 +153,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_retired_identified_to_anonymous_is_refused(): void
+    public function it_should_refuse_to_downgrade_a_retired_identified_device_to_anonymous(): void
     {
         $browser = TestBrowser::chrome();
         $subscription = $this->released($this->registered(IdentifiedOwner::fromSubscriberId('user:1'), $browser));
@@ -163,7 +163,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_claiming_with_another_endpoint_is_a_programming_error(): void
+    public function it_should_treat_a_claim_with_another_endpoint_as_a_programming_error(): void
     {
         $subscription = $this->registered(IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome('one'));
 
@@ -173,7 +173,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_retired_subscription_cannot_be_retired_twice(): void
+    public function it_should_refuse_to_retire_a_subscription_twice(): void
     {
         $subscription = $this->registered(IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome());
         $subscription->expire($this->now);
@@ -184,7 +184,7 @@ final class SubscriptionClaimTest extends TestCase
     }
 
     #[Test]
-    public function it_should_is_ordered_by_last_registration(): void
+    public function it_should_order_subscriptions_by_last_registration(): void
     {
         $older = $this->registered(IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome('a'));
         $this->now = $this->now->modify('+1 minute');

@@ -25,7 +25,7 @@ use RomainMillan\WebPushNotification\Testing\TestBrowser;
 final class HttpBoundaryTest extends TestCase
 {
     #[Test]
-    public function it_should_anonymous_visitors_are_denied_by_default(): void
+    public function it_should_deny_anonymous_visitors_by_default(): void
     {
         $this->expectException(AnonymousSubscriptionsDisabled::class);
 
@@ -33,14 +33,14 @@ final class HttpBoundaryTest extends TestCase
     }
 
     #[Test]
-    public function it_should_anonymous_visitors_pass_when_opted_in_and_subscribers_always_do(): void
+    public function it_should_let_anonymous_visitors_through_when_opted_in_and_subscribers_always(): void
     {
         self::assertInstanceOf(AnonymousOwner::class, (new AnonymousGate($this->currentOwner(new AnonymousOwner()), true))->resolve());
         self::assertInstanceOf(IdentifiedOwner::class, (new AnonymousGate($this->currentOwner(IdentifiedOwner::fromSubscriberId('user:1')), false))->resolve());
     }
 
     #[Test]
-    public function it_should_a_browser_subscription_is_parsed(): void
+    public function it_should_parse_a_browser_subscription(): void
     {
         $browser = TestBrowser::chrome();
 
@@ -50,7 +50,7 @@ final class HttpBoundaryTest extends TestCase
     }
 
     #[Test]
-    public function it_should_only_json_is_read(): void
+    public function it_should_read_only_json(): void
     {
         $this->expectException(UnsupportedMediaType::class);
 
@@ -58,7 +58,7 @@ final class HttpBoundaryTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_body_actually_read_is_bounded_even_without_content_length(): void
+    public function it_should_bound_the_body_actually_read_even_without_content_length(): void
     {
         $this->expectException(RequestTooLarge::class);
 
@@ -66,7 +66,7 @@ final class HttpBoundaryTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_json_depth_is_bounded(): void
+    public function it_should_bound_the_json_depth(): void
     {
         $this->expectException(InvalidRequest::class);
 
@@ -74,7 +74,7 @@ final class HttpBoundaryTest extends TestCase
     }
 
     #[Test]
-    public function it_should_unknown_fields_are_refused(): void
+    public function it_should_refuse_unknown_fields(): void
     {
         $this->expectException(InvalidRequest::class);
 
@@ -82,7 +82,7 @@ final class HttpBoundaryTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_injected_configuration_cannot_break_out_of_its_script(): void
+    public function it_should_keep_the_injected_configuration_inside_its_script(): void
     {
         $encoded = ServiceWorkerScript::encodeForScript(['fallbackTitle' => "</script><script>alert(1)</script>\u{2028}'\""]);
 
@@ -92,7 +92,7 @@ final class HttpBoundaryTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_meta_tag_is_attribute_safe_and_carries_no_marker_for_anonymous(): void
+    public function it_should_render_an_attribute_safe_meta_tag_without_marker_for_anonymous(): void
     {
         $configuration = new ClientConfiguration(
             ['publicKey' => 'key', 'serviceWorker' => '/web-push-sw.js', 'subscribe' => '/web-push/subscribe', 'unsubscribe' => '/web-push/unsubscribe', 'clickPrefixes' => ['/'], 'stateCache' => 'web-push-state'],

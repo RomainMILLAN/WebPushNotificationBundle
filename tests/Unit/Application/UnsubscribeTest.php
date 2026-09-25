@@ -23,7 +23,7 @@ use RomainMillan\WebPushNotification\Tests\Support\TestApplication;
 final class UnsubscribeTest extends TestCase
 {
     #[Test]
-    public function it_should_the_device_proves_possession_whatever_its_owner_logout_flow(): void
+    public function it_should_let_the_device_prove_possession_whatever_its_owner(): void
     {
         $app = new TestApplication();
         $browser = TestBrowser::chrome();
@@ -38,7 +38,7 @@ final class UnsubscribeTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_wrong_auth_changes_nothing_and_says_nothing(): void
+    public function it_should_change_nothing_and_say_nothing_on_a_wrong_auth(): void
     {
         $app = new TestApplication();
         $browser = TestBrowser::chrome();
@@ -51,7 +51,7 @@ final class UnsubscribeTest extends TestCase
     }
 
     #[Test]
-    public function it_should_an_owner_only_removes_their_own_device(): void
+    public function it_should_let_an_owner_remove_only_their_own_device(): void
     {
         $app = new TestApplication();
         $browser = TestBrowser::chrome();
@@ -66,7 +66,7 @@ final class UnsubscribeTest extends TestCase
     }
 
     #[Test]
-    public function it_should_revoke_filters_on_the_owner(): void
+    public function it_should_filter_revocation_on_the_owner(): void
     {
         $app = new TestApplication();
         $app->registerSubscription()->register(IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome()->address());
@@ -81,7 +81,7 @@ final class UnsubscribeTest extends TestCase
     }
 
     #[Test]
-    public function it_should_account_removal_deletes_every_device_active_or_retired(): void
+    public function it_should_delete_every_device_active_or_retired_on_account_removal(): void
     {
         $app = new TestApplication(maxPerSubscriber: 1);
         $alice = IdentifiedOwner::fromSubscriberId('user:1');

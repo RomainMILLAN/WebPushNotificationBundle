@@ -23,7 +23,7 @@ use RomainMillan\WebPushNotification\Domain\Message\WebPushMessage;
 final class WebPushMessageTest extends TestCase
 {
     #[Test]
-    public function it_should_the_default_tag_is_the_message_id_so_retries_replace_instead_of_stacking(): void
+    public function it_should_default_the_tag_to_the_message_id_so_retries_replace_instead_of_stacking(): void
     {
         $message = WebPushMessage::createWithTitle('Hello');
 
@@ -31,7 +31,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_insistent_requires_an_explicit_tag(): void
+    public function it_should_require_an_explicit_tag_to_be_insistent(): void
     {
         $this->expectException(InvalidValue::class);
 
@@ -39,7 +39,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_insistent_sets_require_interaction_and_renotify(): void
+    public function it_should_set_require_interaction_and_renotify_when_insistent(): void
     {
         $payload = WebPushMessage::createWithTitle('Alert')->withTag(Tag::fromString('alert-42'))->insistent()->toPayload();
 
@@ -49,7 +49,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_at_most_two_actions(): void
+    public function it_should_accept_at_most_two_actions(): void
     {
         $message = WebPushMessage::createWithTitle('Hi')
             ->withAction(new DismissAction(ActionLabel::fromActionAndTitle('one', 'One')))
@@ -77,7 +77,7 @@ final class WebPushMessageTest extends TestCase
 
     #[DataProvider('offOriginClickPaths')]
     #[Test]
-    public function it_should_a_click_path_never_leaves_the_origin(string $path): void
+    public function it_should_keep_click_paths_inside_the_origin(string $path): void
     {
         $this->expectException(InvalidValue::class);
 
@@ -85,7 +85,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_an_action_url_belongs_to_the_application_origin(): void
+    public function it_should_keep_action_urls_inside_the_application_origin(): void
     {
         $origin = Origin::fromString('https://app.example.com');
 
@@ -97,7 +97,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_an_asset_is_an_in_origin_path_or_an_https_url(): void
+    public function it_should_accept_only_in_origin_paths_or_https_urls_as_assets(): void
     {
         self::assertSame('/icon.png', AssetUrl::fromString('/icon.png')->toString());
 
@@ -106,7 +106,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_data_is_flat_and_scalar(): void
+    public function it_should_keep_message_data_flat_and_scalar(): void
     {
         self::assertSame(['id' => 42, 'kind' => 'payment'], MessageData::fromEntries(['id' => 42, 'kind' => 'payment'])->toPayload());
 
@@ -115,7 +115,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_title_is_mandatory(): void
+    public function it_should_require_a_title(): void
     {
         $this->expectException(InvalidValue::class);
 
@@ -123,7 +123,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_delivery_options_map_to_rfc8030_headers(): void
+    public function it_should_map_delivery_options_to_rfc8030_headers(): void
     {
         $options = DeliveryOptions::createDefault()->withTtl(60)->withUrgency(Urgency::High)->withTopic('alert-42');
 
@@ -132,7 +132,7 @@ final class WebPushMessageTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_topic_cannot_inject_headers(): void
+    public function it_should_prevent_a_topic_from_injecting_headers(): void
     {
         $this->expectException(InvalidValue::class);
 

@@ -37,20 +37,20 @@ final class SsrfTest extends TestCase
 
     #[DataProvider('nonPublicAddresses')]
     #[Test]
-    public function it_should_non_public_addresses_are_refused(string $ip): void
+    public function it_should_refuse_non_public_addresses(string $ip): void
     {
         self::assertFalse((new PublicIpPolicy())->isPublic($ip));
     }
 
     #[Test]
-    public function it_should_public_addresses_are_accepted(): void
+    public function it_should_accept_public_addresses(): void
     {
         self::assertTrue((new PublicIpPolicy())->isPublic('142.250.74.10'));
         self::assertTrue((new PublicIpPolicy())->isPublic('2a00:1450:4007:80e::200a'));
     }
 
     #[Test]
-    public function it_should_pinning_forces_the_checked_address_and_brackets_ipv6(): void
+    public function it_should_pin_the_checked_address_and_bracket_ipv6(): void
     {
         $plan = (new ResolvedHostPinning($this->resolver(['fcm.googleapis.com' => ['142.250.74.10'], 'web.push.apple.com' => ['2a00:1450:4007:80e::200a']]), new PublicIpPolicy()))
             ->planFor(['fcm.googleapis.com', 'web.push.apple.com', 'fcm.googleapis.com']);
@@ -59,7 +59,7 @@ final class SsrfTest extends TestCase
     }
 
     #[Test]
-    public function it_should_one_private_address_in_the_answer_makes_the_host_unsafe(): void
+    public function it_should_consider_a_host_unsafe_when_one_resolved_address_is_private(): void
     {
         $plan = (new ResolvedHostPinning($this->resolver(['fcm.googleapis.com' => ['142.250.74.10', '10.0.0.5']]), new PublicIpPolicy()))->planFor(['fcm.googleapis.com']);
 
@@ -68,13 +68,13 @@ final class SsrfTest extends TestCase
     }
 
     #[Test]
-    public function it_should_an_unresolvable_host_is_unsafe(): void
+    public function it_should_consider_an_unresolvable_host_unsafe(): void
     {
         self::assertTrue((new ResolvedHostPinning($this->resolver([]), new PublicIpPolicy()))->planFor(['fcm.googleapis.com'])->isUnsafe('fcm.googleapis.com'));
     }
 
     #[Test]
-    public function it_should_the_client_uses_curl_so_the_pins_cannot_be_silently_ignored(): void
+    public function it_should_use_curl_so_the_pins_cannot_be_silently_ignored(): void
     {
         $options = WebPushClientFactory::createWithCurl(TransportHarness::vapid(), 15)->clientOptions(['fcm.googleapis.com:443:142.250.74.10']);
 

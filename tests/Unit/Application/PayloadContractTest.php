@@ -29,7 +29,7 @@ final class PayloadContractTest extends TestCase
     private const FIXTURES = __DIR__.'/../../Fixtures/payload/';
 
     #[Test]
-    public function it_should_a_minimal_message_matches_the_shared_fixture(): void
+    public function it_should_encode_a_minimal_message_as_the_shared_fixture(): void
     {
         $encoded = (new PayloadEncoder())->encode(WebPushMessage::createWithTitle('Hello'));
 
@@ -37,7 +37,7 @@ final class PayloadContractTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_full_message_matches_the_shared_fixture(): void
+    public function it_should_encode_a_full_message_as_the_shared_fixture(): void
     {
         $origin = Origin::fromString('https://app.example.com');
         $message = WebPushMessage::createWithTitle('Payment received', '120 € from ACME')
@@ -57,7 +57,7 @@ final class PayloadContractTest extends TestCase
     }
 
     #[Test]
-    public function it_should_every_payload_fits_the_padding_target(): void
+    public function it_should_refuse_a_payload_larger_than_the_padding_target(): void
     {
         $this->expectException(InvalidPayload::class);
 
@@ -65,7 +65,7 @@ final class PayloadContractTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_queued_payload_is_restored_only_if_it_speaks_v1(): void
+    public function it_should_restore_a_queued_payload_only_if_it_speaks_v1(): void
     {
         $encoded = (new PayloadEncoder())->encode(WebPushMessage::createWithTitle('Hello'));
 

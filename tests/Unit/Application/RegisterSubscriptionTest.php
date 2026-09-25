@@ -24,7 +24,7 @@ use RomainMillan\WebPushNotification\Tests\Support\TestApplication;
 final class RegisterSubscriptionTest extends TestCase
 {
     #[Test]
-    public function it_should_a_new_browser_is_registered_and_the_event_published_after_commit(): void
+    public function it_should_register_a_new_browser_and_publish_the_event_after_commit(): void
     {
         $app = new TestApplication();
 
@@ -36,7 +36,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_an_endpoint_outside_the_allowlist_is_refused_before_anything(): void
+    public function it_should_refuse_an_endpoint_outside_the_allowlist_before_anything(): void
     {
         $app = new TestApplication();
         $evil = new PushAddress(PushEndpoint::fromString('https://169-254-169-254.nip.io/latest/meta-data'), SubscriptionKeys::fromStrings(str_repeat('A', 87), str_repeat('B', 22)), ContentEncoding::Aes128Gcm);
@@ -46,7 +46,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_registering_again_renews_instead_of_duplicating(): void
+    public function it_should_renew_instead_of_duplicating_when_registering_again(): void
     {
         $app = new TestApplication();
         $browser = TestBrowser::chrome();
@@ -60,7 +60,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_quota_evicts_the_least_recently_registered_device(): void
+    public function it_should_evict_the_least_recently_registered_device_beyond_the_quota(): void
     {
         $app = new TestApplication(maxPerSubscriber: 2);
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
@@ -78,7 +78,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_renewal_refreshes_the_eviction_rank(): void
+    public function it_should_refresh_the_eviction_rank_on_renewal(): void
     {
         $app = new TestApplication(maxPerSubscriber: 2);
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
@@ -97,7 +97,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_delete_policy_removes_evicted_devices(): void
+    public function it_should_remove_evicted_devices_with_the_delete_policy(): void
     {
         $app = new TestApplication(retirementPolicy: RetirementPolicy::Delete, maxPerSubscriber: 1);
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
@@ -111,7 +111,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_quota_applies_on_reactivation(): void
+    public function it_should_apply_the_quota_on_reactivation(): void
     {
         $app = new TestApplication(maxPerSubscriber: 1);
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
@@ -127,7 +127,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_shared_browser_changes_hands_with_proof_and_the_new_owner_quota_applies(): void
+    public function it_should_hand_a_shared_browser_over_with_proof_and_apply_the_new_owner_quota(): void
     {
         $app = new TestApplication();
         $browser = TestBrowser::chrome();
@@ -142,7 +142,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_leaked_endpoint_cannot_detach_a_device(): void
+    public function it_should_prevent_a_leaked_endpoint_from_detaching_a_device(): void
     {
         $app = new TestApplication();
         $browser = TestBrowser::chrome();
@@ -156,7 +156,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_anonymous_subscriptions_stop_at_the_global_cap_without_evicting_strangers(): void
+    public function it_should_stop_anonymous_subscriptions_at_the_global_cap_without_evicting_strangers(): void
     {
         $app = new TestApplication(maxAnonymous: 2);
 
@@ -168,7 +168,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_lost_race_on_the_unique_index_is_replayed_as_an_upsert(): void
+    public function it_should_replay_a_lost_unique_index_race_as_an_upsert(): void
     {
         $app = new TestApplication();
         $browser = TestBrowser::chrome();
@@ -186,7 +186,7 @@ final class RegisterSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_should_nothing_is_published_when_the_transaction_rolls_back(): void
+    public function it_should_publish_nothing_when_the_transaction_rolls_back(): void
     {
         $app = new TestApplication();
 

@@ -43,7 +43,7 @@ final class MinishlinkPushTransportTest extends TestCase
 
     #[DataProvider('answers')]
     #[Test]
-    public function it_should_every_answer_is_classified(Response $answer, DeliveryStatus $status, FailureCategory $category): void
+    public function it_should_classify_every_answer(Response $answer, DeliveryStatus $status, FailureCategory $category): void
     {
         $harness = new TransportHarness();
         $harness->responses->append($answer);
@@ -56,7 +56,7 @@ final class MinishlinkPushTransportTest extends TestCase
     }
 
     #[Test]
-    public function it_should_retry_after_is_honoured(): void
+    public function it_should_honour_retry_after(): void
     {
         $harness = new TransportHarness();
         $harness->responses->append(new Response(429, ['Retry-After' => '120']));
@@ -66,7 +66,7 @@ final class MinishlinkPushTransportTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_network_failure_is_transient(): void
+    public function it_should_classify_a_network_failure_as_transient(): void
     {
         $harness = new TransportHarness();
         $harness->responses->append(new ConnectException('Connection refused for https://fcm.googleapis.com/fcm/send/secret', new Request('POST', 'https://fcm.googleapis.com/fcm/send/secret')));
@@ -79,7 +79,7 @@ final class MinishlinkPushTransportTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_payload_is_encrypted_and_the_rfc8030_headers_are_sent(): void
+    public function it_should_encrypt_the_payload_and_send_the_rfc8030_headers(): void
     {
         $harness = new TransportHarness();
         $harness->responses->append(new Response(201));
@@ -96,7 +96,7 @@ final class MinishlinkPushTransportTest extends TestCase
     }
 
     #[Test]
-    public function it_should_several_devices_are_mapped_back_to_their_own_outcome(): void
+    public function it_should_map_several_devices_back_to_their_own_outcome(): void
     {
         $harness = new TransportHarness();
         $harness->responses->append(new Response(201), new Response(410));

@@ -29,7 +29,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     abstract protected function transactionBoundary(): TransactionBoundary;
 
     #[Test]
-    public function it_should_a_saved_subscription_is_reconstituted_with_its_state(): void
+    public function it_should_reconstitute_a_saved_subscription_with_its_state(): void
     {
         $browser = TestBrowser::chrome();
         $this->save($this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), $browser));
@@ -42,7 +42,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_an_unknown_id_is_not_found(): void
+    public function it_should_not_find_an_unknown_id(): void
     {
         $this->expectException(SubscriptionNotFound::class);
 
@@ -50,7 +50,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_lookups_by_fingerprint_include_retired_subscriptions(): void
+    public function it_should_include_retired_subscriptions_in_fingerprint_lookups(): void
     {
         $browser = TestBrowser::chrome();
         $subscription = $this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), $browser);
@@ -63,7 +63,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_the_same_endpoint_under_another_id_violates_the_unique_index(): void
+    public function it_should_violate_the_unique_index_with_the_same_endpoint_under_another_id(): void
     {
         $browser = TestBrowser::chrome();
         $this->save($this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), $browser));
@@ -74,7 +74,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_saving_twice_updates(): void
+    public function it_should_update_when_saving_twice(): void
     {
         $subscription = $this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome());
         $this->save($subscription);
@@ -85,7 +85,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_owned_by_returns_the_active_subscriptions_of_an_identified_owner_only(): void
+    public function it_should_return_only_the_active_subscriptions_of_an_identified_owner(): void
     {
         $alice = IdentifiedOwner::fromSubscriberId('user:1');
         $this->save($this->subscription(1, $alice, TestBrowser::chrome('a')));
@@ -101,7 +101,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_the_owner_filter_is_part_of_the_query(): void
+    public function it_should_filter_on_the_owner_inside_the_query(): void
     {
         $this->save($this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome()));
 
@@ -112,7 +112,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_get_many_omits_missing_ids(): void
+    public function it_should_omit_missing_ids_in_get_many(): void
     {
         $this->save($this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome('a')));
         $this->save($this->subscription(2, IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome('b')));
@@ -121,7 +121,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_active_subscriptions_come_in_batches(): void
+    public function it_should_return_active_subscriptions_in_batches(): void
     {
         foreach (range(1, 5) as $i) {
             $this->save($this->subscription($i, IdentifiedOwner::fromSubscriberId('user:'.$i), TestBrowser::chrome('device-'.$i)));
@@ -133,7 +133,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_bulk_purges(): void
+    public function it_should_purge_in_bulk(): void
     {
         $retired = $this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome('a'));
         $retired->expire(new \DateTimeImmutable('2026-01-01'));
@@ -148,7 +148,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_the_read_model_lists_devices_without_secrets(): void
+    public function it_should_list_devices_without_secrets(): void
     {
         $browser = TestBrowser::safari('secret-token');
         $this->save($this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), $browser));
@@ -163,7 +163,7 @@ abstract class SubscriptionRepositoryContract extends TestCase
     }
 
     #[Test]
-    public function it_should_removal(): void
+    public function it_should_remove_a_subscription(): void
     {
         $subscription = $this->subscription(1, IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome());
         $this->save($subscription);

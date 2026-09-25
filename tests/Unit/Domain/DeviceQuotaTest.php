@@ -17,13 +17,13 @@ use RomainMillan\WebPushNotification\Testing\TestBrowser;
 final class DeviceQuotaTest extends TestCase
 {
     #[Test]
-    public function it_should_nothing_is_evicted_below_the_quota(): void
+    public function it_should_evict_nothing_below_the_quota(): void
     {
         self::assertSame([], DeviceQuota::createAllowing(3)->evictionsToFitOneMore($this->devices(2)));
     }
 
     #[Test]
-    public function it_should_the_least_recently_registered_makes_room(): void
+    public function it_should_make_room_by_evicting_the_least_recently_registered(): void
     {
         $devices = $this->devices(3);
         $evicted = DeviceQuota::createAllowing(3)->evictionsToFitOneMore($devices);
@@ -33,13 +33,13 @@ final class DeviceQuotaTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_lowered_quota_evicts_the_whole_excess(): void
+    public function it_should_evict_the_whole_excess_when_the_quota_is_lowered(): void
     {
         self::assertCount(4, DeviceQuota::createAllowing(2)->evictionsToFitOneMore($this->devices(5)));
     }
 
     #[Test]
-    public function it_should_a_quota_is_at_least_one(): void
+    public function it_should_refuse_a_quota_below_one(): void
     {
         $this->expectException(InvalidValue::class);
 

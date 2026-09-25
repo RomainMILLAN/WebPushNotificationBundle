@@ -31,7 +31,7 @@ final class CapabilityLeakTest extends TestCase
     private const TOKEN = 'capability-token-that-must-never-leak';
 
     #[Test]
-    public function it_should_no_log_ever_contains_the_endpoint(): void
+    public function it_should_never_log_the_endpoint(): void
     {
         $harness = new TransportHarness();
         $endpoint = 'https://fcm.googleapis.com/fcm/send/'.self::TOKEN;
@@ -56,7 +56,7 @@ final class CapabilityLeakTest extends TestCase
     }
 
     #[Test]
-    public function it_should_an_unsafe_host_is_refused_without_leaking_the_endpoint(): void
+    public function it_should_refuse_an_unsafe_host_without_leaking_the_endpoint(): void
     {
         $rebinding = new class implements DnsResolver {
             public function resolve(string $host): array
@@ -75,7 +75,7 @@ final class CapabilityLeakTest extends TestCase
     }
 
     #[Test]
-    public function it_should_domain_objects_never_dump_their_secrets(): void
+    public function it_should_never_dump_the_secrets_of_domain_objects(): void
     {
         $browser = TestBrowser::chrome(self::TOKEN);
         $target = new DeliveryTarget(SubscriptionId::fromString(str_repeat('b', 32)), $browser->address());

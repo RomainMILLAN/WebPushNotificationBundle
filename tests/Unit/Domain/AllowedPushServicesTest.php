@@ -28,7 +28,7 @@ final class AllowedPushServicesTest extends TestCase
 
     #[DataProvider('knownServices')]
     #[Test]
-    public function it_should_permits_the_known_push_services(string $endpoint, string $service): void
+    public function it_should_permit_the_known_push_services(string $endpoint, string $service): void
     {
         $allowed = AllowedPushServices::createWithKnownServices();
 
@@ -50,13 +50,13 @@ final class AllowedPushServicesTest extends TestCase
 
     #[DataProvider('unknownHosts')]
     #[Test]
-    public function it_should_refuses_every_other_host(string $endpoint): void
+    public function it_should_refuse_every_other_host(string $endpoint): void
     {
         self::assertFalse(AllowedPushServices::createWithKnownServices()->permits(PushEndpoint::fromString($endpoint)));
     }
 
     #[Test]
-    public function it_should_extra_hosts_extend_the_allowlist(): void
+    public function it_should_extend_the_allowlist_with_extra_hosts(): void
     {
         $allowed = AllowedPushServices::createWithKnownServices(['push.example.org']);
 
@@ -80,7 +80,7 @@ final class AllowedPushServicesTest extends TestCase
 
     #[DataProvider('invalidExtraHosts')]
     #[Test]
-    public function it_should_extra_hosts_are_validated(string $host): void
+    public function it_should_validate_extra_hosts(string $host): void
     {
         $this->expectException(InvalidValue::class);
 

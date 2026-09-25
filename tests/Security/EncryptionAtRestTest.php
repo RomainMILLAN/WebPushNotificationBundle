@@ -24,7 +24,7 @@ final class EncryptionAtRestTest extends TestCase
     private static array $keys = [];
 
     #[Test]
-    public function it_should_secrets_are_encrypted_in_the_row_and_restored(): void
+    public function it_should_encrypt_secrets_in_the_row_and_restore_them(): void
     {
         $mapper = new SubscriptionRowMapper(new AeadSubscriptionCipher($this->key('k1')));
         $browser = TestBrowser::chrome('secret-token');
@@ -39,7 +39,7 @@ final class EncryptionAtRestTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_ciphertext_moved_to_another_row_no_longer_decrypts(): void
+    public function it_should_refuse_to_decrypt_a_ciphertext_moved_to_another_row(): void
     {
         $mapper = new SubscriptionRowMapper(new AeadSubscriptionCipher($this->key('k1')));
         $victim = $mapper->toRow(Subscription::register(SubscriptionId::fromString(str_repeat('a', 32)), IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome('victim')->address(), new \DateTimeImmutable()));
@@ -52,7 +52,7 @@ final class EncryptionAtRestTest extends TestCase
     }
 
     #[Test]
-    public function it_should_keys_rotate_without_rewriting_existing_rows(): void
+    public function it_should_rotate_keys_without_rewriting_existing_rows(): void
     {
         $oldMapper = new SubscriptionRowMapper(new AeadSubscriptionCipher($this->key('old')));
         $row = $oldMapper->toRow(Subscription::register(SubscriptionId::fromString(str_repeat('a', 32)), IdentifiedOwner::fromSubscriberId('user:1'), TestBrowser::chrome()->address(), new \DateTimeImmutable()));
@@ -63,7 +63,7 @@ final class EncryptionAtRestTest extends TestCase
     }
 
     #[Test]
-    public function it_should_a_key_must_decode_to_32_bytes(): void
+    public function it_should_refuse_a_key_that_does_not_decode_to_32_bytes(): void
     {
         $this->expectException(InvalidValue::class);
 
@@ -71,7 +71,7 @@ final class EncryptionAtRestTest extends TestCase
     }
 
     #[Test]
-    public function it_should_vapid_keys_are_validated_at_boot(): void
+    public function it_should_validate_vapid_keys_at_boot(): void
     {
         $this->expectException(InvalidValue::class);
 
@@ -79,7 +79,7 @@ final class EncryptionAtRestTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_client_state_marker_is_stable_per_subscriber_and_depends_on_the_secret(): void
+    public function it_should_derive_a_stable_client_state_marker_per_subscriber_from_the_secret(): void
     {
         $factory = new HmacClientStateMarkerFactory('secret-one');
 

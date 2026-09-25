@@ -30,7 +30,7 @@ final class PushEndpointTest extends TestCase
 
     #[DataProvider('realEndpoints')]
     #[Test]
-    public function it_should_accepts_real_endpoints_and_round_trips_them_unchanged(string $endpoint): void
+    public function it_should_accept_real_endpoints_and_round_trip_them_unchanged(string $endpoint): void
     {
         self::assertSame($endpoint, PushEndpoint::fromString($endpoint)->toString());
     }
@@ -57,7 +57,7 @@ final class PushEndpointTest extends TestCase
 
     #[DataProvider('refusedEndpoints')]
     #[Test]
-    public function it_should_refuses_what_is_not_a_canonical_https_endpoint(string $endpoint): void
+    public function it_should_refuse_what_is_not_a_canonical_https_endpoint(string $endpoint): void
     {
         $this->expectException(InvalidPushEndpoint::class);
 
@@ -65,7 +65,7 @@ final class PushEndpointTest extends TestCase
     }
 
     #[Test]
-    public function it_should_refuses_an_endpoint_longer_than_the_column(): void
+    public function it_should_refuse_an_endpoint_longer_than_the_column(): void
     {
         $this->expectException(InvalidPushEndpoint::class);
 
@@ -73,7 +73,7 @@ final class PushEndpointTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_fingerprint_identifies_the_device(): void
+    public function it_should_identify_the_device_by_its_fingerprint(): void
     {
         $endpoint = PushEndpoint::fromString('https://fcm.googleapis.com/fcm/send/abc123');
 
@@ -82,7 +82,7 @@ final class PushEndpointTest extends TestCase
     }
 
     #[Test]
-    public function it_should_never_dumps_the_capability_url(): void
+    public function it_should_never_dump_the_capability_url(): void
     {
         $endpoint = PushEndpoint::fromString('https://fcm.googleapis.com/fcm/send/secret-token');
 
@@ -91,7 +91,7 @@ final class PushEndpointTest extends TestCase
     }
 
     #[Test]
-    public function it_should_the_exception_message_never_repeats_the_endpoint(): void
+    public function it_should_never_repeat_the_endpoint_in_the_exception_message(): void
     {
         try {
             PushEndpoint::fromString('https://evil.example:8080/secret-token');

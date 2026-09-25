@@ -16,7 +16,7 @@ final class SubscriptionKeysTest extends TestCase
     private const AUTH = 'tBHItJI5svbpez7KI4CCXg';
 
     #[Test]
-    public function it_should_accepts_browser_keys(): void
+    public function it_should_accept_browser_keys(): void
     {
         $keys = SubscriptionKeys::fromStrings(self::P256DH, self::AUTH);
 
@@ -39,7 +39,7 @@ final class SubscriptionKeysTest extends TestCase
 
     #[DataProvider('invalidKeys')]
     #[Test]
-    public function it_should_refuses_malformed_keys(string $p256dh, string $auth): void
+    public function it_should_refuse_malformed_keys(string $p256dh, string $auth): void
     {
         $this->expectException(InvalidValue::class);
 
@@ -47,7 +47,7 @@ final class SubscriptionKeysTest extends TestCase
     }
 
     #[Test]
-    public function it_should_never_dumps_the_secrets(): void
+    public function it_should_never_dump_the_secrets(): void
     {
         $dump = print_r(SubscriptionKeys::fromStrings(self::P256DH, self::AUTH), true);
 
