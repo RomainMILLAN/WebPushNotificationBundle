@@ -1,7 +1,8 @@
 # Laravel
 
 The Laravel bridge is `RomainMillan\WebPushNotification\Bridge\Laravel\WebPushNotificationServiceProvider`,
-auto-discovered (`extra.laravel.providers`). It supports Laravel 11 and 12.
+auto-discovered (`extra.laravel.providers`). It supports Laravel 12 (Laravel 11 is out of security support and every 11.x release carries
+open security advisories).
 
 - [Installation](#installation)
 - [Boot-time validation](#boot-time-validation)

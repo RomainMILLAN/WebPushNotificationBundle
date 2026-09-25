@@ -56,7 +56,7 @@ Initial release.
 
 ### Laravel bridge
 
-- Auto-discovered `WebPushNotificationServiceProvider` (Laravel 11, 12) with boot-time validation.
+- Auto-discovered `WebPushNotificationServiceProvider` (Laravel 12) with boot-time validation.
   `APP_URL` is not read at boot when `VAPID_SUBJECT` is set: the `Origin` is resolved on first use,
   with a clear error for a non-https `APP_URL` (localhost aside).
 - `Signing\LaravelActionUrlSigner` (`URL::temporarySignedRoute`, verified by the `signed`

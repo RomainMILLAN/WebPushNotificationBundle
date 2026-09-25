@@ -71,7 +71,7 @@ This package packs those lessons once, with tests, for both frameworks.
 | PHP | ≥ 8.2 with `ext-curl`, `ext-sodium`, `ext-json` (and `ext-openssl`, `ext-mbstring`, required by `minishlink/web-push`) |
 | Recommended | `ext-gmp` or `ext-bcmath` (faster VAPID signing and payload encryption) |
 | Symfony | 6.4, 7.x or 8.x, with `symfony/security-bundle`, `symfony/rate-limiter` and CSRF protection enabled |
-| Laravel | 11 or 12 |
+| Laravel | 12 |
 | Browsers | Any browser with the Push API; iOS/iPadOS 16.4+ for PWAs added to the home screen |
 
 ## Quick start: Symfony

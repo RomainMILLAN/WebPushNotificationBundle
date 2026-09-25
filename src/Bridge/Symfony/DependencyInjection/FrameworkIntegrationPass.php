@@ -41,6 +41,14 @@ final readonly class FrameworkIntegrationPass implements CompilerPassInterface
             $container->setDefinition(SubscriptionLock::class, new Definition(LocalSubscriptionLock::class));
         }
 
+        // Older Symfony releases (e.g. 7.4.0) put framework.router.default_uri straight into
+        // router.request_context's first argument, not into the router.request_context.base_url
+        // parameter: the origin context copies the arguments rather than re-reading the parameters.
+        if ($container->hasDefinition('router.request_context')) {
+            $container->getDefinition('web_push_notification.request_context')
+                ->setArguments($container->getDefinition('router.request_context')->getArguments());
+        }
+
         // Optional integrations: drop what the application did not install.
         if (!$container->has('twig')) {
             $container->removeDefinition(WebPushExtension::class);

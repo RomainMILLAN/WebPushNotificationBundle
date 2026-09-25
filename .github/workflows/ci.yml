@@ -15,14 +15,16 @@ concurrency:
 
 jobs:
   php-tests:
-    name: PHP ${{ matrix.php }} · ${{ matrix.framework }} · ${{ matrix.dependencies }}
+    name: PHP ${{ matrix.php }} · ${{ matrix.framework }} · ${{ matrix.laravel }} · ${{ matrix.dependencies }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        # Laravel 12 requires Symfony >= 7.2 components: Symfony 6.4 is tested without Laravel.
         include:
-          - { php: '8.2', framework: 'symfony/framework-bundle:6.4.*', laravel: 'laravel/framework:^11.0', dependencies: lowest }
-          - { php: '8.2', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^11.0', dependencies: highest }
+          - { php: '8.2', framework: 'symfony/framework-bundle:6.4.*', laravel: 'none', dependencies: lowest }
+          - { php: '8.2', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: lowest }
+          - { php: '8.2', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
           - { php: '8.3', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
           - { php: '8.4', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
           - { php: '8.5', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
@@ -55,15 +57,24 @@ jobs:
           extensions: curl, gmp, sodium, mbstring, openssl, pdo_sqlite, pdo_mysql, pdo_pgsql
           coverage: none
       - name: Pin the framework versions of this job
+        if: matrix.laravel != 'none'
         run: composer require --dev --no-update "${{ matrix.framework }}" "${{ matrix.laravel }}"
+      - name: Pin Symfony and drop Laravel
+        if: matrix.laravel == 'none'
+        run: |
+          composer remove --dev --no-update orchestra/testbench
+          composer require --dev --no-update "${{ matrix.framework }}"
       - name: Install dependencies (${{ matrix.dependencies }})
         run: composer update --no-interaction --no-progress ${{ matrix.dependencies == 'lowest' && '--prefer-lowest --prefer-stable' || '' }}
+      # Fails on security advisories; abandoned packages (doctrine/cache, pulled by the lowest
+      # Doctrine versions) are only reported.
       - name: Audit dependencies
-        run: composer audit
-      - run: vendor/bin/phpunit
+        run: composer audit --abandoned=report
+      - name: Tests
+        run: vendor/bin/phpunit ${{ matrix.laravel == 'none' && '--testsuite unit,contract,security,symfony' || '' }}
 
   symfony-8:
-    # Laravel 11/12 require Symfony 7 components: Symfony 8 is tested without Laravel.
+    # Laravel 12 requires Symfony 7 components: Symfony 8 is tested without Laravel.
     name: PHP 8.4 · Symfony 8.0 (without Laravel)
     runs-on: ubuntu-latest
     steps:
