@@ -1,10 +1,10 @@
 # Changelog
 
-All notable changes to `romainmillan/web-push-notification` (Composer) and
-`@romainmillan/web-push-notification` (npm) are documented here. The project follows
+All notable changes to `romainmillan/web-push-notification` are documented here, including
+the JS client shipped in `assets/dist`. The project follows
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased] / 0.1.0
+## 0.1.0 - 2026-09-25
 
 Initial release.
 
@@ -67,7 +67,7 @@ Initial release.
   `MarkWebPushResponsePrivate` on the `web` group; commands `web-push:vapid`, `web-push:test`,
   `web-push:purge`.
 
-### Frontend (npm 0.1.0)
+### Frontend (`assets/dist`)
 
 - `startWebPush()` page loader (single worker registration, daily sync, VAPID key rotation,
   navigation intent claim, logout unsubscription), `WebPushClient`, typed errors, diagnostics.

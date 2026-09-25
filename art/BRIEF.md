@@ -9,7 +9,7 @@ skill, one component at a time. Exports land in `art/` (excluded from the Compos
 
 `romainmillan/web-push-notification`: an open-source (MIT) PHP package for Symfony and Laravel,
 with its browser client, that lets web applications send push notifications to browsers and
-installed PWAs, safely. Audience: PHP developers reading a GitHub README, Packagist and npm pages.
+installed PWAs, safely. Audience: PHP developers reading a GitHub README and Packagist pages.
 
 Tone: precise, trustworthy, quietly technical. Security-minded without looking like a security
 product (no shields, no padlocks). Neutral: it serves every browser and push service.
@@ -58,7 +58,7 @@ Both are open-licensed (SIL OFL); outline the wordmark in exported SVGs.
 | `logo.svg` | Vector, colour | Symbol + wordmark, horizontal |
 | `logo-mono.svg` | Vector, one colour (`currentColor`) | Same layout, single fill |
 | `icon.svg` | Vector, square | Symbol only, centred, safe margin 12 % |
-| `icon-512.png` | 512 × 512 PNG | Packagist / npm avatar, from `icon.svg` on `color.surface` |
+| `icon-512.png` | 512 × 512 PNG | Packagist avatar, from `icon.svg` on `color.surface` |
 | `banner-light.png` | 1280 × 320 PNG | README banner for light mode: logo + one-line pitch ("Web Push for Symfony & Laravel") |
 | `banner-dark.png` | 1280 × 320 PNG | Same, dark tokens (the README switches with `prefers-color-scheme`) |
 | `social-preview.png` | 1280 × 640 PNG | GitHub social preview; keep content inside the central 1200 × 600 |

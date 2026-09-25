@@ -126,5 +126,4 @@ uses `pull_request_target`.
 3. Nothing to publish on npm: the JS client ships in `assets/dist` inside the Composer archive
    and applications install it with `file:vendor/romainmillan/web-push-notification/assets`.
    `assets/package.json` is `"private": true` so it cannot be published by accident.
-4. Enable 2FA on the GitHub, Packagist and npm accounts; restrict the npm token to publishing
-   this package.
+4. Enable 2FA on the GitHub and Packagist accounts.

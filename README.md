@@ -55,7 +55,7 @@ This package packs those lessons once, with tests, for both frameworks.
 - **Signed action URLs**: an `ActionUrlSigner` per framework (Symfony `UriSigner`, Laravel
   temporary signed routes) for lock-screen buttons that POST back to your app.
 - **Optional encryption at rest** (XChaCha20-Poly1305, key rotation).
-- **Frontend package** `@romainmillan/web-push-notification`: page client, Stimulus controller,
+- **Frontend shipped with the Composer package** (`assets/dist`, no npm registry): page client, Stimulus controller,
   prebuilt service worker served by a PHP route (no build step), usable standalone or through
   `importScripts()` from your own worker, plugins for iOS navigation intents, client state,
   diagnostics and app badge.
@@ -215,8 +215,14 @@ Full reference: [docs/laravel.md](docs/laravel.md).
 
 ## Quick start: frontend
 
-The page client, the Stimulus controller and the service worker ship as
-`@romainmillan/web-push-notification` (also available in `vendor/romainmillan/web-push-notification/assets`).
+The page client, the Stimulus controller and the service worker ship prebuilt inside the Composer
+package (`vendor/romainmillan/web-push-notification/assets`), not on the npm registry. Install them
+as the local package `@romainmillan/web-push-notification`:
+
+```bash
+yarn add @romainmillan/web-push-notification@file:vendor/romainmillan/web-push-notification/assets
+```
+
 The service worker itself needs **no build**: the PHP route `/web-push-sw.js` serves the prebuilt
 script with your configuration injected.
 
