@@ -102,6 +102,17 @@ adapter author installs it anyway to run the contract.
 | `php-quality` | `composer validate --strict`, PHP-CS-Fixer, PHPStan, Rector, deptrac, Infection (`--min-msi=80 --min-covered-msi=80`) |
 | `frontend` | `yarn install --immutable`, `yarn npm audit --all --recursive --severity high`, typecheck, Vitest, rebuild of `dist/` + `git diff --exit-code -- dist` |
 
+PHPUnit fails on risky tests and deprecations, so a few `require-dev` lower bounds only exist for
+the `--prefer-lowest` jobs:
+
+- `symfony/error-handler` `^6.4.44 || ^7.4.17 || ^8.1.5`: older releases leave the exception
+  handler registered by the kernel behind, every kernel test is then risky.
+- `masterminds/html5` `^2.7.5` (pulled by `symfony/dom-crawler`): older releases trigger a PHP
+  deprecation in `DOMImplementation::createDocument()`.
+- `doctrine/doctrine-bundle` `^3.0` is allowed for Symfony 8, which DoctrineBundle 2 does not support.
+- On PHP ≥ 8.4 the test kernel enables `doctrine.orm.enable_native_lazy_objects`:
+  `symfony/var-exporter` 8 no longer ships the LazyGhost proxies Doctrine ORM relies on otherwise.
+
 Actions are pinned by commit SHA, the workflow runs with `permissions: contents: read` and never
 uses `pull_request_target`.
 

@@ -35,6 +35,11 @@ abstract class DoctrineRepositoryContract extends SubscriptionRepositoryContract
 
     protected function tearDown(): void
     {
+        // Unset when a subclass skipped the test before booting (no MySQL / PostgreSQL DSN).
+        if (!isset($this->kernel)) {
+            return;
+        }
+
         $this->kernel->shutdown();
     }
 

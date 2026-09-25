@@ -83,7 +83,10 @@ final class TestKernel extends Kernel
         $container->extension('doctrine', [
             'dbal' => $this->database(),
             // auto_mapping as in the doctrine/orm recipe: the bundle must not break it.
-            'orm' => ['auto_mapping' => true, 'controller_resolver' => ['auto_mapping' => false]],
+            'orm' => ['auto_mapping' => true, 'controller_resolver' => ['auto_mapping' => false]]
+                // As in the doctrine/orm recipe: symfony/var-exporter 8 (PHP >= 8.4) no longer ships
+                // the LazyGhost proxies of the ORM, native lazy objects replace them.
+                + (\PHP_VERSION_ID >= 80400 ? ['enable_native_lazy_objects' => true] : []),
         ]);
 
         $container->extension('web_push_notification', array_replace_recursive([
