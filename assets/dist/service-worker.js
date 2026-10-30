@@ -1,4 +1,4 @@
-//#region src/click_path.ts
+// src/click_path.ts
 /**
 * The ONLY function that sees a raw click destination, shared by the worker and the page.
 *
@@ -44,8 +44,7 @@ function resolveClickPath(raw, base, origin, prefixes) {
 function isAllowedPathname(pathname, prefixes) {
 	return pathname === "/" || prefixes.some((prefix) => prefix !== "" && pathname.startsWith(prefix));
 }
-//#endregion
-//#region src/contract.ts
+// src/contract.ts
 /**
 * The contract shared by the page and the service worker.
 *
@@ -91,8 +90,7 @@ var MessageType = {
 function parseMarker(raw) {
 	return typeof raw === "string" && /^[0-9a-f]{16}$/.test(raw) ? raw : null;
 }
-//#endregion
-//#region src/service-worker/config.ts
+// src/service-worker/config.ts
 var DEFAULT_FALLBACK_TITLE = "Notification";
 /**
 * Normalizes an untrusted config object: unknown keys are dropped, wrong types fall
@@ -119,8 +117,7 @@ function nonEmptyString(value) {
 function stringList(value) {
 	return Array.isArray(value) ? value.filter((item) => typeof item === "string" && item !== "") : [];
 }
-//#endregion
-//#region src/service-worker/payload.ts
+// src/service-worker/payload.ts
 var ACTION_TYPES = [
 	"navigate",
 	"post",
@@ -250,8 +247,7 @@ function parseData(raw) {
 function nonEmpty(value) {
 	return value === "" ? null : value;
 }
-//#endregion
-//#region src/service-worker/state_store.ts
+// src/service-worker/state_store.ts
 /**
 * JSON documents in the worker's Cache Storage state cache.
 *
@@ -296,8 +292,7 @@ var StateStore = class {
 		} catch {}
 	}
 };
-//#endregion
-//#region src/service-worker/install.ts
+// src/service-worker/install.ts
 /**
 * Marks the installation ON the scope, under a registry symbol shared by every copy of
 * this code. A module-local WeakMap is not enough: `importScripts('/web-push-sw.js')`
@@ -594,8 +589,7 @@ function samePath(rawUrl, clickPath) {
 		return false;
 	}
 }
-//#endregion
-//#region src/service-worker/plugins/badge.ts
+// src/service-worker/plugins/badge.ts
 /**
 * Puts the payload's `badgeCount` on the app icon (Badging API, installed PWAs).
 *
@@ -617,8 +611,7 @@ function badge() {
 		}
 	};
 }
-//#endregion
-//#region src/service-worker/plugins/client_state.ts
+// src/service-worker/plugins/client_state.ts
 /**
 * Remembers which client state marker the pages of this device announce, and forgets
 * everything at logout.
@@ -649,8 +642,7 @@ function clientState() {
 async function readStoredMarker(state) {
 	return parseMarker((await state.read(MARKER_KEY))?.marker);
 }
-//#endregion
-//#region src/service-worker/plugins/diagnostics.ts
+// src/service-worker/plugins/diagnostics.ts
 /**
 * Answers `worker-ping` with the running version, and keeps a trail of the last clicks.
 *
@@ -693,8 +685,7 @@ async function readTrail(state) {
 	const trail = await state.read(TRAIL_KEY);
 	return Array.isArray(trail) ? trail : [];
 }
-//#endregion
-//#region src/service-worker/plugins/navigation_intent.ts
+// src/service-worker/plugins/navigation_intent.ts
 /**
 * Leaves a navigation intent in Cache Storage for a page to claim.
 *
@@ -737,5 +728,4 @@ async function dropExpiredIntent(state, now = Date.now()) {
 	if (intent === null) return;
 	if (typeof intent.at !== "number" || now - intent.at > 3e5 || parseMarker(intent.marker) === null) await state.remove(INTENT_KEY);
 }
-//#endregion
 export { DEFAULT_FALLBACK_TITLE, DEFAULT_STATE_CACHE, INTENT_KEY, INTENT_MAX_AGE_MS, MARKER_KEY, MessageType, PAYLOAD_VERSION, SW_VERSION, StateStore, TRAIL_KEY, acceptAssetUrl, badge, buildNotification, clientState, diagnostics, installWebPush, navigationIntent, normalizeServiceWorkerConfig, parsePayload };

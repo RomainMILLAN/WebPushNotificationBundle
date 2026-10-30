@@ -1,5 +1,5 @@
 (function() {
-	//#region src/click_path.ts
+	// src/click_path.ts
 	/**
 	* The ONLY function that sees a raw click destination, shared by the worker and the page.
 	*
@@ -93,8 +93,7 @@
 	function stringList(value) {
 		return Array.isArray(value) ? value.filter((item) => typeof item === "string" && item !== "") : [];
 	}
-	//#endregion
-	//#region src/service-worker/payload.ts
+	// src/service-worker/payload.ts
 	var ACTION_TYPES = [
 		"navigate",
 		"post",
@@ -224,8 +223,7 @@
 	function nonEmpty(value) {
 		return value === "" ? null : value;
 	}
-	//#endregion
-	//#region src/service-worker/state_store.ts
+	// src/service-worker/state_store.ts
 	/**
 	* JSON documents in the worker's Cache Storage state cache.
 	*
@@ -270,8 +268,7 @@
 			} catch {}
 		}
 	};
-	//#endregion
-	//#region src/service-worker/install.ts
+	// src/service-worker/install.ts
 	/**
 	* Marks the installation ON the scope, under a registry symbol shared by every copy of
 	* this code. A module-local WeakMap is not enough: `importScripts('/web-push-sw.js')`
@@ -568,8 +565,7 @@
 			return false;
 		}
 	}
-	//#endregion
-	//#region src/service-worker/plugins/badge.ts
+	// src/service-worker/plugins/badge.ts
 	/**
 	* Puts the payload's `badgeCount` on the app icon (Badging API, installed PWAs).
 	*
@@ -591,8 +587,7 @@
 			}
 		};
 	}
-	//#endregion
-	//#region src/service-worker/plugins/client_state.ts
+	// src/service-worker/plugins/client_state.ts
 	/**
 	* Remembers which client state marker the pages of this device announce, and forgets
 	* everything at logout.
@@ -623,8 +618,7 @@
 	async function readStoredMarker(state) {
 		return parseMarker((await state.read(MARKER_KEY))?.marker);
 	}
-	//#endregion
-	//#region src/service-worker/plugins/diagnostics.ts
+	// src/service-worker/plugins/diagnostics.ts
 	/**
 	* Answers `worker-ping` with the running version, and keeps a trail of the last clicks.
 	*
@@ -667,8 +661,7 @@
 		const trail = await state.read(TRAIL_KEY);
 		return Array.isArray(trail) ? trail : [];
 	}
-	//#endregion
-	//#region src/service-worker/plugins/navigation_intent.ts
+	// src/service-worker/plugins/navigation_intent.ts
 	/**
 	* Leaves a navigation intent in Cache Storage for a page to claim.
 	*
@@ -711,8 +704,7 @@
 		if (intent === null) return;
 		if (typeof intent.at !== "number" || now - intent.at > 3e5 || parseMarker(intent.marker) === null) await state.remove(INTENT_KEY);
 	}
-	//#endregion
-	//#region src/service-worker/standalone.ts
+	// src/service-worker/standalone.ts
 	/**
 	* The prebuilt worker, dist/web-push-sw.js (IIFE, no module syntax).
 	*
@@ -729,5 +721,4 @@
 			badge()
 		]
 	});
-	//#endregion
 })();

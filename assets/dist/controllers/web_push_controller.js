@@ -6,8 +6,7 @@ import { Controller } from "@hotwired/stimulus";
 function parseMarker(raw) {
 	return typeof raw === "string" && /^[0-9a-f]{16}$/.test(raw) ? raw : null;
 }
-//#endregion
-//#region src/client/config.ts
+// src/client/config.ts
 var CONFIG_META_NAME = "web-push-config";
 /**
 * Reads the config from the LIVE DOM, on every call: Turbo replaces the <head>.
@@ -44,8 +43,7 @@ function readPageConfig(doc = document) {
 function stringOf(value) {
 	return typeof value === "string" ? value : "";
 }
-//#endregion
-//#region src/client/errors.ts
+// src/client/errors.ts
 var WebPushError = class extends Error {
 	code;
 	constructor(code, message, options) {
@@ -347,8 +345,7 @@ function sameApplicationServerKey(subscription, applicationServerKey) {
 	if (currentBytes.length !== applicationServerKey.length) return false;
 	return currentBytes.every((byte, i) => byte === applicationServerKey[i]);
 }
-//#endregion
-//#region src/controllers/web_push_controller.ts
+// src/controllers/web_push_controller.ts
 var DEFAULT_LABELS = {
 	unavailable: "Notifications are not configured on this page.",
 	unsupported: "This browser does not support push notifications.",
@@ -447,5 +444,4 @@ var WebPushController = class extends Controller {
 function toggleDisabled(element, disabled) {
 	if ("disabled" in element) element.disabled = disabled;
 }
-//#endregion
 export { WebPushController as default };
