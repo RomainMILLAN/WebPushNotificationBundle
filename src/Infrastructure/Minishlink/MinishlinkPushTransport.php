@@ -81,8 +81,8 @@ final readonly class MinishlinkPushTransport implements PushTransport
     }
 
     /**
-     * Minishlink yields reports in queue order: the index maps a report back to its
-     * target without ever reading the endpoint back from the report.
+     * Minishlink sends sequentially and yields reports in queue order: the index maps
+     * a report back to its target without ever reading the endpoint back from the report.
      *
      * @param list<DeliveryTarget> $queued
      */

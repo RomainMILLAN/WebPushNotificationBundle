@@ -21,7 +21,7 @@
         "ext-json": "*",
         "ext-sodium": "*",
         "guzzlehttp/guzzle": "^7.9",
-        "minishlink/web-push": "^10.1",
+        "minishlink/web-push": "^11.0",
         "psr/clock": "^1.0",
         "psr/event-dispatcher": "^1.0",
         "psr/log": "^2.0 || ^3.0",

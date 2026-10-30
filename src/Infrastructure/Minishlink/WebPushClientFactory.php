@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace RomainMillan\WebPushNotification\Infrastructure\Minishlink;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Handler\CurlMultiHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\HttpFactory;
 use Minishlink\WebPush\WebPush;
 use RomainMillan\WebPushNotification\Infrastructure\Vapid\VapidCredentials;
 
 /**
- * Builds one WebPush client per batch — its client options carry that batch's
- * CURLOPT_RESOLVE pins, and Minishlink only reads client options at construction.
+ * Builds one WebPush client per batch — its PSR-18 client is built per batch because
+ * its options carry that batch's CURLOPT_RESOLVE pins.
  *
  * The cURL handler is IMPOSED: Guzzle's "curl" request option (where the pins live)
  * is silently ignored by the stream handler, and the DNS-rebinding protection would
@@ -44,7 +46,9 @@ final readonly class WebPushClientFactory
      */
     public function createClient(array $resolveEntries): WebPush
     {
-        $client = new WebPush($this->vapidCredentials->toWebPushAuth(), [], $this->timeoutSeconds, $this->clientOptions($resolveEntries));
+        // Factories injected on purpose: no php-http discovery at runtime.
+        $httpFactory = new HttpFactory();
+        $client = new WebPush($this->vapidCredentials->toWebPushAuth(), [], new Client($this->clientOptions($resolveEntries)), $httpFactory, $httpFactory);
         $client->setReuseVAPIDHeaders(true);
         // Kept on purpose (Minishlink's default): every payload is padded to the same
         // size, so the encrypted length leaks nothing about the content.

@@ -1,4 +1,4 @@
-//#region src/contract.ts
+// src/contract.ts
 /**
 * The contract shared by the page and the service worker.
 *
@@ -36,8 +36,7 @@ var MessageType = {
 function parseMarker(raw) {
 	return typeof raw === "string" && /^[0-9a-f]{16}$/.test(raw) ? raw : null;
 }
-//#endregion
-//#region src/client/config.ts
+// src/client/config.ts
 var CONFIG_META_NAME = "web-push-config";
 /**
 * Reads the config from the LIVE DOM, on every call: Turbo replaces the <head>.
@@ -74,8 +73,7 @@ function readPageConfig(doc = document) {
 function stringOf(value) {
 	return typeof value === "string" ? value : "";
 }
-//#endregion
-//#region src/client/errors.ts
+// src/client/errors.ts
 var WebPushError = class extends Error {
 	code;
 	constructor(code, message, options) {
@@ -119,8 +117,7 @@ function codeForStatus(status) {
 		default: return "http-error";
 	}
 }
-//#endregion
-//#region src/client/web_push_client.ts
+// src/client/web_push_client.ts
 /** Re-POST an existing subscription at most this often (keeps `lastSeen` fresh server side). */
 var SYNC_INTERVAL_MS = 864e5;
 var SYNC_STORAGE_KEY = "web-push:last-sync";
@@ -381,8 +378,7 @@ function sameApplicationServerKey(subscription, applicationServerKey) {
 	if (currentBytes.length !== applicationServerKey.length) return false;
 	return currentBytes.every((byte, i) => byte === applicationServerKey[i]);
 }
-//#endregion
-//#region src/click_path.ts
+// src/click_path.ts
 /**
 * The ONLY function that sees a raw click destination, shared by the worker and the page.
 *
@@ -428,8 +424,7 @@ function resolveClickPath(raw, base, origin, prefixes) {
 function isAllowedPathname(pathname, prefixes) {
 	return pathname === "/" || prefixes.some((prefix) => prefix !== "" && pathname.startsWith(prefix));
 }
-//#endregion
-//#region src/page/navigation_intent.ts
+// src/page/navigation_intent.ts
 /**
 * The marker the server rendered for this page, re-read from the LIVE DOM on every call.
 * A Turbo preview shows a snapshot <head>, possibly a stale marker: abstain.
@@ -489,8 +484,7 @@ async function claimNavigationIntent(options = {}) {
 	(options.navigate ?? ((path) => view.location.assign(path)))(clickPath);
 	return "navigated";
 }
-//#endregion
-//#region src/page/start.ts
+// src/page/start.ts
 /** An installed iOS PWA almost never navigates: ask for a fresh script when coming back, at most this often. */
 var UPDATE_THROTTLE_MS = 6e4;
 var DEFAULT_LOGOUT_SELECTOR = "form[data-web-push-logout]";
@@ -679,8 +673,7 @@ function withTimeout(promise, timeoutMs) {
 		});
 	});
 }
-//#endregion
-//#region src/page/diagnostics.ts
+// src/page/diagnostics.ts
 /** Local patience, not a contract constant: the worker has no symmetric timeout. */
 var WORKER_PING_TIMEOUT_MS = 2e3;
 /** Bounds `serviceWorker.ready`, which never settles without an active registration. */
@@ -741,5 +734,4 @@ async function activeWorker(container) {
 function defaultContainer() {
 	return typeof navigator !== "undefined" && "serviceWorker" in navigator ? navigator.serviceWorker : void 0;
 }
-//#endregion
 export { CONFIG_META_NAME, DEFAULT_LOGOUT_SELECTOR, DEFAULT_LOGOUT_TIMEOUT_MS, INTENT_MAX_AGE_MS, MessageType, SW_VERSION, SYNC_INTERVAL_MS, UPDATE_THROTTLE_MS, WebPushClient, WebPushError, WebPushPermissionError, WebPushRequestError, WebPushUnsupportedError, browserEnvironment, claimNavigationIntent, isSafeClickPath, parseMarker, readClickTrail, readPageConfig, readRenderedMarker, readWorkerDiagnostics, sameApplicationServerKey, shouldCheckForUpdate, startWebPush, urlBase64ToUint8Array };
