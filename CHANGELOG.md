@@ -4,12 +4,18 @@ All notable changes to `romainmillan/web-push-notification` are documented here,
 the JS client shipped in `assets/dist`. The project follows
 [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## 0.2.0 - 2026-10-30
 
 ### Changed
 
 - Requires `minishlink/web-push` ^11.0 (PSR-18 transport); delivery within a batch is now
   sequential.
+
+### Security
+
+- JS client dev dependencies: `vite` ^8.3.3 (GHSA-587h-7wmj-h5pm), `undici` 8.12.3 and
+  `source-map-js` 1.2.2 (GHSA-68fv-2mgg-jv7q and the undici advisories reported by
+  `yarn npm audit`). `assets/dist` rebuilt, no functional change.
 
 ## 0.1.0 - 2026-09-25
 
