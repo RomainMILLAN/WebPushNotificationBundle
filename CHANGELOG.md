@@ -4,7 +4,7 @@ All notable changes to `romainmillan/web-push-notification` are documented here,
 the JS client shipped in `assets/dist`. The project follows
 [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## 0.3.0 - 2026-10-30
 
 ### Added
 
