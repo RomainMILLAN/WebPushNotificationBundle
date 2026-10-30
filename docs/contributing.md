@@ -97,8 +97,8 @@ adapter author installs it anyway to run the contract.
 
 | Job | Content |
 |---|---|
-| `php-tests` | Matrix PHP 8.2 with Symfony 6.4 without Laravel (`--prefer-lowest`, suites `unit`, `contract`, `security`, `symfony`: Laravel 12 needs Symfony ≥ 7.2 components), PHP 8.2 with Symfony 7.4 + Laravel 12 (`--prefer-lowest`), 8.2 / 8.3 / 8.4 / 8.5 with Symfony 7.4 and Laravel 12 (highest); MySQL 8.4 and PostgreSQL 17 services; `composer audit`; PHPUnit. The Symfony 6.4 job is the only one exercising the `_web_push_expires` path of `SymfonyActionUrlSigner` |
-| `symfony-8` | PHP 8.4, Symfony 8.0 without Laravel (Laravel 12 needs Symfony 7 components); suites `unit`, `contract`, `security`, `symfony` |
+| `php-tests` | Matrix PHP 8.2 with Symfony 6.4 without Laravel (`--prefer-lowest`, suites `unit`, `contract`, `security`, `symfony`: Laravel 12 needs Symfony ≥ 7.2 components), PHP 8.2 with Symfony 7.4 + Laravel 12 (`--prefer-lowest`), 8.2 / 8.3 / 8.4 / 8.5 with Symfony 7.4 and Laravel 12 (highest), PHP 8.3 with Symfony 7.4 + Laravel 13 (`--prefer-lowest`), 8.3 / 8.4 / 8.5 with Symfony 7.4 and Laravel 13 (highest); MySQL 8.4 and PostgreSQL 17 services; `composer audit`; PHPUnit. The Symfony 6.4 job is the only one exercising the `_web_push_expires` path of `SymfonyActionUrlSigner` |
+| `symfony-8` | PHP 8.4, Symfony 8.0 without Laravel (the Symfony dev dependencies stop at 7.x); suites `unit`, `contract`, `security`, `symfony` |
 | `php-quality` | `composer validate --strict`, PHP-CS-Fixer, PHPStan, Rector, deptrac, Infection (`--min-msi=80 --min-covered-msi=80`) |
 | `frontend` | `yarn install --immutable`, `yarn npm audit --all --recursive --severity high`, typecheck, Vitest, rebuild of `dist/` + `git diff --exit-code -- dist` |
 

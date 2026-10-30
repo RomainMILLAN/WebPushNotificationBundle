@@ -20,7 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Laravel 12 requires Symfony >= 7.2 components: Symfony 6.4 is tested without Laravel.
+        # Laravel 12 requires Symfony >= 7.2 components and Laravel 13 Symfony >= 7.4 with PHP >= 8.3:
+        # Symfony 6.4 is tested without Laravel.
         include:
           - { php: '8.2', framework: 'symfony/framework-bundle:6.4.*', laravel: 'none', dependencies: lowest }
           - { php: '8.2', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: lowest }
@@ -28,6 +29,10 @@ jobs:
           - { php: '8.3', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
           - { php: '8.4', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
           - { php: '8.5', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^12.0', dependencies: highest }
+          - { php: '8.3', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^13.0', dependencies: lowest }
+          - { php: '8.3', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^13.0', dependencies: highest }
+          - { php: '8.4', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^13.0', dependencies: highest }
+          - { php: '8.5', framework: 'symfony/framework-bundle:7.4.*', laravel: 'laravel/framework:^13.0', dependencies: highest }
     services:
       mysql:
         image: mysql:8.4
@@ -74,7 +79,7 @@ jobs:
         run: vendor/bin/phpunit ${{ matrix.laravel == 'none' && '--testsuite unit,contract,security,symfony' || '' }}
 
   symfony-8:
-    # Laravel 12 requires Symfony 7 components: Symfony 8 is tested without Laravel.
+    # The Symfony dev dependencies stop at 7.x: Symfony 8 is tested without Laravel.
     name: PHP 8.4 · Symfony 8.0 (without Laravel)
     runs-on: ubuntu-latest
     steps:

@@ -4,6 +4,12 @@ All notable changes to `romainmillan/web-push-notification` are documented here,
 the JS client shipped in `assets/dist`. The project follows
 [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Added
+
+- Laravel 13 support (tested in CI with Orchestra Testbench 11, PHP 8.3+).
+
 ## 0.2.0 - 2026-10-30
 
 ### Changed
