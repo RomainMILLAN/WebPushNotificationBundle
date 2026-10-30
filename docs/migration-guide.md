@@ -6,7 +6,7 @@
 
 - [General approach](#general-approach)
 - [Romain-MILLAN-Finance (Symfony 7.4)](#romain-millan-finance-symfony-74)
-- [romainmillan-notifier (Laravel 12)](#romainmillan-notifier-laravel-12)
+- [romainmillan-notifier (Laravel 13)](#romainmillan-notifier-laravel-13)
 - [Checklist](#checklist)
 
 ## General approach
@@ -185,7 +185,7 @@ WHERE p.id = (
 `assets/pwa/service_worker.js`, and the push part of `User`. `SendPushNotificationHandler` and
 `PushPayloadFactory` become a thin handler building a `WebPushMessage`.
 
-## romainmillan-notifier (Laravel 12)
+## romainmillan-notifier (Laravel 13)
 
 ### What exists
 
